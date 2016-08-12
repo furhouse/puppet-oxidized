@@ -14,11 +14,12 @@ class oxidized (
 
   $main_options = {},
   $password     = $oxidized::params::password,
-  $gem          = $oxidized::params::gem,
+  $gem          = true,
   $version      = 'present',
 
 ) inherits oxidized::params {
 
+  validate_bool($gem)
   validate_hash($main_options)
 
   if $password == undef {

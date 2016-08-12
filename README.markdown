@@ -13,48 +13,58 @@
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves. This is your 30 second elevator pitch for your module. Consider including OS/Puppet version it works with.       
+The oxidized module deploys [oxidized](https://github.com/ytti/oxidized).
 
 ## Module Description
 
-If applicable, this section should have a brief description of the technology the module integrates with and what that integration enables. This section should answer the questions: "What does this module *do*?" and "Why would I use it?"
+This module sets up [oxidized](https://github.com/ytti/oxidized), a network device configuration backup tool.
 
-If your module has a range of functionality (installation, configuration, management, etc.) this is the time to mention it.
+The module has been tested with puppet 3.7.4+ on Debian 8 and Ubuntu 16.04. Support for RedHat/CentOS 7 hasn't been tested yet.
 
 ## Setup
 
 ### What oxidized affects
 
-* A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form. 
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled, etc.), mention it here. 
+* Installation of oxidized
+* Management of configuration file
 
 ### Beginning with oxidized
 
-The very basic steps needed for a user to get the module up and running. 
-
-If your most recent release breaks compatibility or requires particular steps for upgrading, you may wish to include an additional section here: Upgrading (For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+class { 'oxidized':
+  password => 'oxidized',
+}
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing the fancy stuff with your module here. 
+By default, oxidized, oxidized-script and oxidized-web are installed as gems. If
+gem is set to false, regular system packages are installed. See (#limitations)
+on how to build oxidized system packages.
 
 ## Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
+TBD
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+v0.1.0 is only tested on Debian 8 and Ubuntu 16.04. Currently,
+service and user management isn't implemented yet. Finally, I'm using HTTP as
+input source, router.db management should follow soon.
+
+Also, $oxidized::params::package_names are based on the names of the .deb files
+which I created with [fpm](https://github.com/jordansissel/fpm). These packages
+are then pushed to a local apt repository.
+
+Due to the ruby >= 2.0 dependency of the net-ssh gem, this module does not (yet)
+work with Debian 7 and Ubuntu 14.04 out of the box.
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
+Feel free to open a pull request if you see fit. I'll read up on rspec testing
+in the meanwhile...
 
-## Release Notes/Contributors/Etc **Optional**
+For more information, read the [module contribution guide](https://docs.puppet.com/forge/contributing.html).
 
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+## Release Notes/Contributors/Etc
+
+If not explicitly stated otherwise, I'm only testing this module on Debian 8 and
+Ubuntu 16.04.

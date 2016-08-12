@@ -7,8 +7,30 @@ class oxidized::params {
 
   case $::osfamily {
     debian: {
-      $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
-      $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
+      case $::operatingsystem {
+        'Debian': {
+          case $::lsbdistcodename {
+            'jessie': {
+              $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
+              $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
+            }
+            default: {
+              fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
+            }
+          }
+        }
+        'Ubuntu': {
+          case $::lsbdistcodename {
+            'xenial': {
+              $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
+              $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
+            }
+            default: {
+              fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
+            }
+          }
+        }
+      }
     }
     redhat: {
       case $::lsbmajdistrelease {
@@ -27,7 +49,6 @@ class oxidized::params {
   }
 
   $password           = undef
-  $gem                = true
   $gem_names          = [ 'oxidized', 'oxidized-script', 'oxidized-web' ]
   $oxidized_config    = '/etc/oxidized.conf'
 

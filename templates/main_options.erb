@@ -1,5 +1,6 @@
 # File is managed by Puppet
 
+---
 <%- password = scope.lookupvar('oxidized::password') -%>
 <% if password -%>
 password: <%= password -%>
