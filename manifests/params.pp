@@ -50,7 +50,7 @@ class oxidized::params {
 
   $password           = undef
   $gem_names          = [ 'oxidized', 'oxidized-script', 'oxidized-web' ]
-  $oxidized_config    = '/etc/oxidized.conf'
+  $oxidized_config    = '/var/lib/oxidized/.config/oxidized/config'
 
   $default_options = {
     username   => 'oxidized',

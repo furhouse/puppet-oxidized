@@ -6,8 +6,8 @@ class oxidized::config {
 
   concat { $oxidized::params::oxidized_config:
     ensure => present,
-    owner  => root,
-    group  => root,
+    owner  => oxidized,
+    group  => oxidized,
     mode   => '0644',
   }
 
