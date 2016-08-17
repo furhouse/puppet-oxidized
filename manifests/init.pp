@@ -14,17 +14,10 @@ class oxidized (
 
   $main_options = {},
   $password     = $oxidized::params::password,
-  $gem          = true,
+  $gem          = $oxidized::params::gem,
   $version      = 'present',
 
 ) inherits oxidized::params {
-
-  validate_bool($gem)
-  validate_hash($main_options)
-
-  if $password == undef {
-    fail('Please set a password.')
-  }
 
   # Merge hashes from multiple layer of hierarchy in hiera
   $hiera_main_options = hiera_hash("${module_name}::main_options", undef)
@@ -35,8 +28,9 @@ class oxidized (
   }
 
   class { 'oxidized::main':
-    ensure  => $version,
-    options => $fin_main_options,
+    ensure   => $version,
+    options  => $fin_main_options,
+    password => $password,
   }
 
 }

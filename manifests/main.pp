@@ -4,10 +4,19 @@
 #
 class oxidized::main (
 
-  $ensure  = present,
-  $options = {}
+  $ensure   = present,
+  $password = $oxidized::params::password,
+  $options  = {}
 
   ) inherits oxidized::params {
+
+  if $password == undef {
+    fail('Please set a password.')
+  }
+  
+  $fin_pass = {
+    password => $password,
+  }
 
   # Merge hashes from multiple layer of hierarchy in hiera
   $hiera_options = hiera_hash("${module_name}::main::options", undef)
@@ -17,7 +26,7 @@ class oxidized::main (
     default => $hiera_options,
   }
   
-  $merged_options = merge($oxidized::params::default_options, $fin_options)
+  $merged_options = merge($fin_pass, $oxidized::params::default_options, $fin_options)
 
   include oxidized::install
   include oxidized::config

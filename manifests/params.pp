@@ -30,6 +30,9 @@ class oxidized::params {
             }
           }
         }
+        default: {
+          fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
+        }
       }
     }
     redhat: {
@@ -49,19 +52,20 @@ class oxidized::params {
   }
 
   $password           = undef
+  $gem                = true
   $gem_names          = [ 'oxidized', 'oxidized-script', 'oxidized-web' ]
-  $oxidized_config    = '/var/lib/oxidized/.config/oxidized/config'
+  $oxidized_config    = '/etc/oxidized.conf'
 
   $default_options = {
     username   => 'oxidized',
     model      => 'junos',
-    interval   => '3600',
+    interval   => 3600,
     use_syslog => true,
     pid        => '/var/run/oxidized.pid',
     debug      => false,
-    threads    => '30',
-    timeout    => '20',
-    retries    => '3',
+    threads    => 30,
+    timeout    => 20,
+    retries    => 3,
     prompt     => '!ruby/regexp /^([\w.@-]+[#>]\s?)$/',
     vars       => {},
     groups     => {},

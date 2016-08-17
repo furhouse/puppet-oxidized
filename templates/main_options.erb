@@ -1,30 +1,5 @@
 # File is managed by Puppet
 
 ---
-<%- password = scope.lookupvar('oxidized::password') -%>
-<% if password -%>
-password: <%= password -%>
-<%- end -%>
-
-<%- main_options = scope.lookupvar('oxidized::main::merged_options') -%>
-<% if main_options -%>
-<%- main_options.keys.each do |k| -%>
-<%- v = main_options[k] -%>
-<%- if v.is_a?(Hash) and v.any? -%>
-<%= k %>:
-<%- v.keys.sort.each do |key| -%>
-<%- value = v[key] -%>
-<%- if value.is_a?(Hash) -%>
-  <%= key -%>:
-  <%- value.each do |a| -%>
-    <%= a.join(": ") %>
-  <%- end -%>
-<%- else value != '' -%>
-  <%= key -%>: <%= value %>
-<%- end -%>
-<%- end -%>
-<%- else -%>
-<%= k -%>: <%= v %>
-<%- end -%>
-<%- end -%>
-<%- end -%>
+<% options = scope.lookupvar('oxidized::main::merged_options') -%>
+<%= options.to_yaml.gsub(/^\s{2}/, '') %>

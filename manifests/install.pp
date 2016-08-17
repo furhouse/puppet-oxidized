@@ -6,7 +6,7 @@ class oxidized::install {
 
   include oxidized::params
 
-  if $oxidized::gem {
+  if $oxidized::params::gem {
     package { $oxidized::params::dependencies:
       ensure  => $oxidized::main::ensure,
     } ->
