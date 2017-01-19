@@ -11,7 +11,7 @@ class oxidized::config {
     mode   => '0644',
   }
 
-  concat::fragment { 'global config':
+  concat::fragment { 'global_oxidized_config':
     target  => $oxidized::params::oxidized_config,
     content => template("${module_name}/main_options.erb"),
     order   => '00'
