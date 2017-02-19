@@ -59,6 +59,7 @@ class oxidized::params {
   $gem                = true
   $gem_names          = [ 'oxidized', 'oxidized-script', 'oxidized-web' ]
   $oxidized_config    = '/etc/oxidized/config'
+  $service_name       = 'oxidized'
   $user               = 'oxidized'
   $group              = 'oxidized'
 
