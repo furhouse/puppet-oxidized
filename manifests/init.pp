@@ -12,10 +12,12 @@
 #
 class oxidized (
 
-  $main_options = {},
-  $password     = $oxidized::params::password,
-  $gem          = $oxidized::params::gem,
-  $version      = 'present',
+  $main_options   = {},
+  $password       = $oxidized::params::password,
+  $gem            = $oxidized::params::gem,
+  $version        = 'present',
+  $oxidized_user  = $oxidized::params::user,
+  $oxidized_group = $oxidized::params::group,
 
 ) inherits oxidized::params {
 
