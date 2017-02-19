@@ -58,7 +58,7 @@ class oxidized::params {
   $password           = undef
   $gem                = true
   $gem_names          = [ 'oxidized', 'oxidized-script', 'oxidized-web' ]
-  $oxidized_config    = '/etc/oxidized.conf'
+  $oxidized_config    = '/etc/oxidized/config'
   $user               = 'oxidized'
   $group              = 'oxidized'
 
@@ -76,7 +76,7 @@ class oxidized::params {
     vars       => {},
     groups     => {},
     model_map  => {},
-    restapi    => '127.0.0.1:8888',
+    rest       => '127.0.0.1:8888',
     input      => {
       'default'  => 'ssh, telnet',
       debug    => false,
@@ -94,6 +94,14 @@ class oxidized::params {
     },
     source      => {
       'default' => 'csv',
+      'csv' => {
+        'file'      =>  '/etc/oxidized/router.db',
+        'delimiter' => ':',
+        'map'       => {
+            'name'  => 0,
+            'model' => 1,
+        },
+      },
     },
     hooks => {},
   }
