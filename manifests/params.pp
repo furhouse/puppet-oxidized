@@ -37,6 +37,10 @@ class oxidized::params {
     }
     redhat: {
       case $::lsbmajdistrelease {
+        '6': {
+          $dependencies  = [ 'cmake', 'sqlite-devel', 'openssl-devel', 'libssh2-devel', 'ruby', 'gcc', 'ruby-devel' ]
+          $package_names = [ 'ruby200-rubygem-oxidized', 'ruby200-rubygem-oxidized-web', 'ruby200-rubygem-oxidized-script' ]
+        }
         7: {
           $dependencies  = [ 'cmake', 'sqlite-devel', 'openssl-devel', 'libssh2-devel', 'ruby', 'gcc', 'ruby-devel' ]
           $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
