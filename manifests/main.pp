@@ -13,7 +13,7 @@ class oxidized::main (
   if $password == undef {
     fail('Please set a password.')
   }
-  
+
   $fin_pass = {
     password => $password,
   }
@@ -25,7 +25,7 @@ class oxidized::main (
     undef   => $options,
     default => $hiera_options,
   }
-  
+
   $merged_options = merge($fin_pass, $oxidized::params::default_options, $fin_options)
 
   include oxidized::install
