@@ -15,7 +15,11 @@ class oxidized (
   $main_options   = {},
   $password       = $oxidized::params::password,
   $gem            = $oxidized::params::gem,
+  $manage_service = $oxidized::params::manage_service,
+  $manage_user    = $oxidized::params::manage_user,
+  $service_name   = $oxidized::params::service_name,
   $version        = 'present',
+  $oxidized_config = $oxidized::params::oxidized_config,
   $oxidized_user  = $oxidized::params::user,
   $oxidized_group = $oxidized::params::group,
 
@@ -29,7 +33,7 @@ class oxidized (
     default => $hiera_main_options,
   }
 
-  class { 'oxidized::main':
+  class { '::oxidized::main':
     ensure   => $version,
     options  => $fin_main_options,
     password => $password,

@@ -28,15 +28,17 @@ class oxidized::main (
 
   $merged_options = merge($fin_pass, $oxidized::params::default_options, $fin_options)
 
-  include oxidized::install
-  include oxidized::config
+  include '::oxidized::install'
+  include '::oxidized::config'
+  include '::oxidized::service'
 
   anchor { 'oxidized::main::start': }
   anchor { 'oxidized::main::end': }
 
-  Anchor['oxidized::main::start'] ->
-  Class['oxidized::install'] ->
-  Class['oxidized::config'] ~>
-  Anchor['oxidized::main::end']
+  Anchor['oxidized::main::start']
+  -> Class['oxidized::install']
+  -> Class['oxidized::config']
+  -> Class['oxidized::service']
+  ~> Anchor['oxidized::main::end']
 
 }

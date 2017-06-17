@@ -5,60 +5,94 @@
 #
 class oxidized::params {
 
-  case $::osfamily {
-    debian: {
-      case $::operatingsystem {
-        'Debian': {
-          case $::lsbdistcodename {
-            'jessie': {
-              $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
-              $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
-            }
-            default: {
-              fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
-            }
-          }
-        }
-        'Ubuntu': {
-          case $::lsbdistcodename {
-            'xenial': {
-              $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
-              $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
-            }
-            default: {
-              fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
-            }
-          }
-        }
-        default: {
-          fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
-        }
-      }
+  if $::operatingsystem == 'Ubuntu' {
+    if versioncmp($::operatingsystemrelease, '16.04') < 0 {
+      fail("Unsupported version ${::operatingsystemrelease}")
+    } else {
+      $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
+      $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
+      $service_provider = 'systemd'
     }
-    redhat: {
-      case $::lsbmajdistrelease {
-        '6': {
-          $dependencies  = [ 'cmake', 'sqlite-devel', 'openssl-devel', 'libssh2-devel', 'ruby', 'gcc', 'ruby-devel' ]
-          $package_names = [ 'ruby200-rubygem-oxidized', 'ruby200-rubygem-oxidized-web', 'ruby200-rubygem-oxidized-script' ]
-        }
-        7: {
-          $dependencies  = [ 'cmake', 'sqlite-devel', 'openssl-devel', 'libssh2-devel', 'ruby', 'gcc', 'ruby-devel' ]
-          $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
-        }
-        default: {
-          fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
-        }
-      }
+  } elsif $::operatingsystem == 'Debian' {
+    if versioncmp($::operatingsystemrelease, '8.0') < 0 {
+      fail("Unsupported version ${::operatingsystemrelease}")
+    } else {
+      $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
+      $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
+      $service_provider = 'systemd'
     }
-    default: {
-      fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
+  } elsif $::operatingsystem =~ /CentOS|RedHat/ {
+    if versioncmp($::operatingsystemrelease, '6.0') < 0 {
+      fail("Unsupported version ${::operatingsystemrelease}")
+    } elsif versioncmp($::operatingsystemrelease, '7.0') < 0 {
+      $dependencies  = [ 'cmake', 'sqlite-devel', 'openssl-devel', 'libssh2-devel', 'ruby', 'gcc', 'ruby-devel' ]
+      $package_names = [ 'ruby200-rubygem-oxidized', 'ruby200-rubygem-oxidized-web', 'ruby200-rubygem-oxidized-script' ]
+      $service_provider = 'init'
+    } else {
+      $dependencies  = [ 'cmake', 'sqlite-devel', 'openssl-devel', 'libssh2-devel', 'ruby', 'gcc', 'ruby-devel' ]
+      $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
+      $service_provider = 'systemd'
     }
+  } else {
+    fail("Your plattform ${::operatingsystem} is not supported, yet.")
   }
+
+  # case $::osfamily {
+    # debian: {
+      # case $::operatingsystem {
+        # 'Debian': {
+          # case $::lsbdistcodename {
+            # 'jessie': {
+              # $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
+              # $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
+            # }
+            # default: {
+              # fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
+            # }
+          # }
+        # }
+        # 'Ubuntu': {
+          # case $::lsbdistcodename {
+            # 'xenial': {
+              # $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
+              # $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
+            # }
+            # default: {
+              # fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
+            # }
+          # }
+        # }
+        # default: {
+          # fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
+        # }
+      # }
+    # }
+    # redhat: {
+      # case $::lsbmajdistrelease {
+        # '6': {
+          # $dependencies  = [ 'cmake', 'sqlite-devel', 'openssl-devel', 'libssh2-devel', 'ruby', 'gcc', 'ruby-devel' ]
+          # $package_names = [ 'ruby200-rubygem-oxidized', 'ruby200-rubygem-oxidized-web', 'ruby200-rubygem-oxidized-script' ]
+        # }
+        # 7: {
+          # $dependencies  = [ 'cmake', 'sqlite-devel', 'openssl-devel', 'libssh2-devel', 'ruby', 'gcc', 'ruby-devel' ]
+          # $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
+        # }
+        # default: {
+          # fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
+        # }
+      # }
+    # }
+    # default: {
+      # fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
+    # }
+  # }
 
   $password           = undef
   $gem                = true
   $gem_names          = [ 'oxidized', 'oxidized-script', 'oxidized-web' ]
   $oxidized_config    = '/etc/oxidized/config'
+  $manage_user        = true
+  $manage_service     = true
   $service_name       = 'oxidized'
   $user               = 'oxidized'
   $group              = 'oxidized'
@@ -83,7 +117,7 @@ class oxidized::params {
       debug    => false,
       ssh      => {
         secure => false,
-      }
+      },
     },
     output     => {
       'default' => 'git',
@@ -91,7 +125,7 @@ class oxidized::params {
           user   => 'Oxidized',
           email  => 'oxidized@example.com',
           repo   => '~/.config/oxidized/oxidized.git',
-        }
+        },
     },
     source      => {
       'default' => 'csv',

@@ -3,12 +3,15 @@
 # This class is meant to be called from oxidized.
 # It ensure the service is running.
 #
-class oxidized::service {
+class oxidized::service inherits oxidized {
 
-  service { $::oxidized::service_name:
-    ensure     => running,
-    enable     => true,
-    hasstatus  => true,
-    hasrestart => true,
+  if $oxidized::manage_service {
+    service { $oxidized::service_name:
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+    }
   }
+
 }
