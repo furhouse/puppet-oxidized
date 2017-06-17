@@ -6,6 +6,9 @@ fixtures:
     stdlib:
       repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
       ref: "4.17.0"
+    systemd:
+      repo: "https://github.com/camptocamp/puppet-systemd"
+      ref: "0.4.0"
   symlinks:
     oxidized: "#{source_dir}"
 

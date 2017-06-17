@@ -53,9 +53,9 @@ describe 'oxidized class' do
       it { is_expected.to be_installed.by('gem') }
     end
 
-    # describe service('oxidized') do
-      # it { is_expected.to be_enabled }
-      # it { is_expected.to be_running }
-    # end
+    describe service('oxidized') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
   end
 end

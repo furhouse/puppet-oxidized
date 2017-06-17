@@ -5,14 +5,14 @@
 class oxidized::main (
 
   $ensure   = present,
-  $password = $oxidized::params::password,
+  $password = $oxidized::password,
   $options  = {}
 
   ) inherits oxidized::params {
 
-  if $password == undef {
-    fail('Please set a password.')
-  }
+  # if $password == undef {
+    # fail("Please provide a \$oxidized::password.")
+  # }
 
   $fin_pass = {
     password => $password,

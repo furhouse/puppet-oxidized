@@ -90,7 +90,9 @@ class oxidized::params {
   $password           = undef
   $gem                = true
   $gem_names          = [ 'oxidized', 'oxidized-script', 'oxidized-web' ]
-  $oxidized_config    = '/etc/oxidized/config'
+  $config_file_template         = undef
+  $config_dir         = '/etc/oxidized'
+  # $config_file    = "${config_dir}/config"
   $manage_user        = true
   $manage_service     = true
   $service_name       = 'oxidized'
@@ -102,7 +104,7 @@ class oxidized::params {
     model      => 'junos',
     interval   => 3600,
     use_syslog => true,
-    pid        => '/var/run/oxidized.pid',
+    pid        => '/var/run/oxidized/oxidized.pid',
     debug      => false,
     threads    => 30,
     timeout    => 20,

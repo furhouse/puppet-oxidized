@@ -6,7 +6,8 @@ describe 'oxidized', :type => :class do
   let(:archive_name) { "oxidized-#{current_version}" }
   let(:config_dir) { '/etc/oxidized' }
   let(:config_file) { "#{config_dir}/config" }
-  let(:config_file_fragment) { 'global_oxidized_config' }
+  let(:config_file_fragment) { "#{config_dir}/config__header" }
+  let(:routerdb) { "#{config_dir}/router.db" }
 
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
@@ -52,7 +53,7 @@ describe 'oxidized', :type => :class do
             it { should contain_group(title).with_system(true) }
 
             it { should contain_user(title).with_ensure('present') }
-            it { should contain_user(title).with_shell('/usr/sbin/nologin') }
+            it { should contain_user(title).with_shell('/bin/false') }
             it { should contain_user(title).with_home(config_dir) }
             it { should contain_user(title).with_gid(title) }
             it { should contain_user(title).with_managehome(false) }
@@ -73,8 +74,29 @@ describe 'oxidized', :type => :class do
           end
           describe "oxidized::service" do
             it { is_expected.to contain_class('oxidized::service') }
-
             it { is_expected.to contain_service(title) }
+
+            it { should contain_file('/var/run/oxidized').with_ensure('directory') }
+            it { should contain_file('/var/run/oxidized').with_owner(title) }
+            it { should contain_file('/var/run/oxidized').with_group(title) }
+            it { should contain_file('/var/run/oxidized').with_mode('0711') }
+
+            # if facts[:os]['family'] == 'Debian' and facts[:operatingsystemrelease] > '8.0'
+            if facts[:os]['family'] == 'Debian'
+              let(:params) { { :password => 'oxidized', :service_provider => 'systemd' } }
+
+              it { should contain_file('/etc/systemd/system/oxidized.service').with_ensure('file') }
+              it { should contain_file('/etc/systemd/system/oxidized.service').with_owner('root') }
+              it { should contain_file('/etc/systemd/system/oxidized.service').with_group('root') }
+              it { should contain_file('/etc/systemd/system/oxidized.service').with_mode('0644') }
+            elsif facts[:os]['family'] == 'RedHat'
+              let(:params) { { :password => 'oxidized', :service_provider => 'systemd' } }
+
+              it { should contain_file('/etc/systemd/system/oxidized.service').with_ensure('file') }
+              it { should contain_file('/etc/systemd/system/oxidized.service').with_owner('root') }
+              it { should contain_file('/etc/systemd/system/oxidized.service').with_group('root') }
+              it { should contain_file('/etc/systemd/system/oxidized.service').with_mode('0644') }
+            end
           end
         end
       end
