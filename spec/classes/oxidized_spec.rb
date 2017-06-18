@@ -4,10 +4,14 @@ describe 'oxidized', :type => :class do
   let(:title) { 'oxidized' }
   let(:facts) { {:concat_basedir => '/path/to/dir'} }
   let(:archive_name) { "oxidized-#{current_version}" }
-  let(:config_dir) { '/etc/oxidized' }
+  let(:config_dir) { "/etc/#{title}" }
   let(:config_file) { "#{config_dir}/config" }
-  let(:config_file_fragment) { "#{config_dir}/config__header" }
+  let(:config_file_header) { "#{config_dir}/config__header" }
+  let(:config_file_options) { "#{config_dir}/config__options" }
   let(:routerdb) { "#{config_dir}/router.db" }
+  let(:centos6_init) { "/etc/init.d/#{title}" }
+  let(:systemd_file) { "/etc/systemd/system/#{title}.service" }
+  let(:pid_dir) { "/var/run/#{title}" }
 
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
@@ -24,6 +28,7 @@ describe 'oxidized', :type => :class do
 
           describe "oxidized::install" do
             it { is_expected.to contain_class('oxidized::install') }
+
             if facts[:os]['family'] == 'Debian'
               it { should contain_package('ruby') }
               it { should contain_package('ruby-dev') }
@@ -38,6 +43,13 @@ describe 'oxidized', :type => :class do
               it { should contain_package('oxidized') }
 
             elsif facts[:os]['family'] == 'RedHat'
+              it { should contain_package('ruby') }
+              it { should contain_package('gcc') }
+              it { should contain_package('libssh2-devel') }
+              it { should contain_package('openssl-devel') }
+              it { should contain_package('ruby-devel') }
+              it { should contain_package('sqlite-devel') }
+            elsif facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '6'
               it { should contain_package('ruby') }
               it { should contain_package('gcc') }
               it { should contain_package('libssh2-devel') }
@@ -59,13 +71,19 @@ describe 'oxidized', :type => :class do
             it { should contain_user(title).with_managehome(false) }
             it { should contain_user(title).with_system(true) }
 
+            it { should contain_file(routerdb).with_ensure('file') }
+            it { should contain_file(routerdb).with_owner(title) }
+            it { should contain_file(routerdb).with_group(title) }
+            it { should contain_file(routerdb).with_mode('0640') }
+
             it { should contain_file(config_dir).with_ensure('directory') }
             it { should contain_file(config_dir).with_owner(title) }
             it { should contain_file(config_dir).with_group(title) }
             it { should contain_file(config_dir).with_mode('0640') }
 
             it { is_expected.to contain_concat(config_file) }
-            it { should contain_concat__fragment(config_file_fragment) }
+            it { should contain_concat__fragment(config_file_header) }
+            it { should contain_concat__fragment(config_file_options) }
           end
           describe "oxidized::main" do
             it { is_expected.to contain_class('oxidized::main') }
@@ -76,26 +94,32 @@ describe 'oxidized', :type => :class do
             it { is_expected.to contain_class('oxidized::service') }
             it { is_expected.to contain_service(title) }
 
-            it { should contain_file('/var/run/oxidized').with_ensure('directory') }
-            it { should contain_file('/var/run/oxidized').with_owner(title) }
-            it { should contain_file('/var/run/oxidized').with_group(title) }
-            it { should contain_file('/var/run/oxidized').with_mode('0711') }
+            it { should contain_file(pid_dir).with_ensure('directory') }
+            it { should contain_file(pid_dir).with_owner(title) }
+            it { should contain_file(pid_dir).with_group(title) }
+            it { should contain_file(pid_dir).with_mode('0711') }
 
-            # if facts[:os]['family'] == 'Debian' and facts[:operatingsystemrelease] > '8.0'
             if facts[:os]['family'] == 'Debian'
               let(:params) { { :password => 'oxidized', :service_provider => 'systemd' } }
 
-              it { should contain_file('/etc/systemd/system/oxidized.service').with_ensure('file') }
-              it { should contain_file('/etc/systemd/system/oxidized.service').with_owner('root') }
-              it { should contain_file('/etc/systemd/system/oxidized.service').with_group('root') }
-              it { should contain_file('/etc/systemd/system/oxidized.service').with_mode('0644') }
-            elsif facts[:os]['family'] == 'RedHat'
+              it { should contain_file(systemd_file).with_ensure('file') }
+              it { should contain_file(systemd_file).with_owner('root') }
+              it { should contain_file(systemd_file).with_group('root') }
+              it { should contain_file(systemd_file).with_mode('0644') }
+            elsif facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '7'
               let(:params) { { :password => 'oxidized', :service_provider => 'systemd' } }
 
-              it { should contain_file('/etc/systemd/system/oxidized.service').with_ensure('file') }
-              it { should contain_file('/etc/systemd/system/oxidized.service').with_owner('root') }
-              it { should contain_file('/etc/systemd/system/oxidized.service').with_group('root') }
-              it { should contain_file('/etc/systemd/system/oxidized.service').with_mode('0644') }
+              it { should contain_file(systemd_file).with_ensure('file') }
+              it { should contain_file(systemd_file).with_owner('root') }
+              it { should contain_file(systemd_file).with_group('root') }
+              it { should contain_file(systemd_file).with_mode('0644') }
+            elsif facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '6'
+              let(:params) { { :password => 'oxidized', :service_provider => 'init' } }
+
+              it { should contain_file(centos6_init).with_ensure('file') }
+              it { should contain_file(centos6_init).with_owner('root') }
+              it { should contain_file(centos6_init).with_group('root') }
+              it { should contain_file(centos6_init).with_mode('0644') }
             end
           end
         end

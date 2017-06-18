@@ -19,7 +19,13 @@ class oxidized::service inherits oxidized {
         ~> Exec['systemctl-daemon-reload']
       }
       'init': {
-      # do something Debian specific
+        file { "/etc/init.d/${module_name}":
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644',
+          source => "puppet:///modules/${module_name}/${module_name}.init",
+        }
       }
       default: {
         fail("Unsupported \$oxidized::service_provider, OS family: ${::osfamily}")

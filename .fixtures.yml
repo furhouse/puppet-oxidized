@@ -9,6 +9,9 @@ fixtures:
     systemd:
       repo: "https://github.com/camptocamp/puppet-systemd"
       ref: "0.4.0"
+    # rvm:
+      # repo: "https://github.com/maestrodev/puppet-rvm"
+      # ref: "1.13.1"
   symlinks:
     oxidized: "#{source_dir}"
 

@@ -4,9 +4,10 @@
 #
 class oxidized::config inherits oxidized {
 
-  $config_dir  = $oxidized::oxidized_config_dir
+  $config_dir  = $oxidized::config_dir
   $config_file = "${config_dir}/config"
   $routerdb    = "${config_dir}/router.db"
+  $devices     = $oxidized::devices
   $options     = $oxidized::main::merged_options
 
   file { $config_dir:
@@ -21,7 +22,7 @@ class oxidized::config inherits oxidized {
     owner   => $oxidized::user,
     group   => $oxidized::group,
     mode    => '0640',
-    content => 'localhost',
+    content => template("${module_name}/routerdb.erb"),
     require => File[$config_dir],
   }
 
@@ -39,19 +40,6 @@ class oxidized::config inherits oxidized {
       system     => true,
     }
   }
-
-  # concat { $oxidized::oxidized_config:
-    # ensure => present,
-    # owner  => $oxidized::oxidized_user,
-    # group  => $oxidized::oxidized_group,
-    # mode   => '0644',
-  # }
-
-  # concat::fragment { 'global_oxidized_config':
-    # target  => $oxidized::params::oxidized_config,
-    # content => template("${module_name}/main_options.erb"),
-    # order   => '00',
-  # }
 
   concat { $config_file:
     owner => $oxidized::user,

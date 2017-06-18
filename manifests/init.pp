@@ -12,18 +12,19 @@
 #
 class oxidized (
 
-  $main_options        = {},
-  $password            = $oxidized::params::password,
-  $gem                 = $oxidized::params::gem,
-  $manage_service      = $oxidized::params::manage_service,
-  $manage_user         = $oxidized::params::manage_user,
-  $service_provider    = $oxidized::params::service_provider,
-  $service_name        = $oxidized::params::service_name,
-  $version             = 'present',
+  $main_options         = {},
+  $password             = $oxidized::params::password,
+  $gem                  = $oxidized::params::gem,
+  $manage_service       = $oxidized::params::manage_service,
+  $manage_user          = $oxidized::params::manage_user,
+  $service_provider     = $oxidized::params::service_provider,
+  $service_name         = $oxidized::params::service_name,
+  $version              = 'present',
   $config_file_template = $oxidized::params::config_file_template,
-  $oxidized_config_dir = $oxidized::params::config_dir,
-  $user                = $oxidized::params::user,
-  $group               = $oxidized::params::group,
+  $config_dir           = $oxidized::params::config_dir,
+  $user                 = $oxidized::params::user,
+  $group                = $oxidized::params::group,
+  $devices              = $oxidized::params::devices,
 
 ) inherits oxidized::params {
 

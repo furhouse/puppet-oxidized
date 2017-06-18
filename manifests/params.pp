@@ -98,6 +98,7 @@ class oxidized::params {
   $service_name       = 'oxidized'
   $user               = 'oxidized'
   $group              = 'oxidized'
+  $devices            = ['localhost']
 
   $default_options = {
     username   => 'oxidized',
