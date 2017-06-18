@@ -37,68 +37,17 @@ class oxidized::params {
     fail("Your plattform ${::operatingsystem} is not supported, yet.")
   }
 
-  # case $::osfamily {
-    # debian: {
-      # case $::operatingsystem {
-        # 'Debian': {
-          # case $::lsbdistcodename {
-            # 'jessie': {
-              # $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
-              # $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
-            # }
-            # default: {
-              # fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
-            # }
-          # }
-        # }
-        # 'Ubuntu': {
-          # case $::lsbdistcodename {
-            # 'xenial': {
-              # $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
-              # $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
-            # }
-            # default: {
-              # fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
-            # }
-          # }
-        # }
-        # default: {
-          # fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
-        # }
-      # }
-    # }
-    # redhat: {
-      # case $::lsbmajdistrelease {
-        # '6': {
-          # $dependencies  = [ 'cmake', 'sqlite-devel', 'openssl-devel', 'libssh2-devel', 'ruby', 'gcc', 'ruby-devel' ]
-          # $package_names = [ 'ruby200-rubygem-oxidized', 'ruby200-rubygem-oxidized-web', 'ruby200-rubygem-oxidized-script' ]
-        # }
-        # 7: {
-          # $dependencies  = [ 'cmake', 'sqlite-devel', 'openssl-devel', 'libssh2-devel', 'ruby', 'gcc', 'ruby-devel' ]
-          # $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
-        # }
-        # default: {
-          # fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
-        # }
-      # }
-    # }
-    # default: {
-      # fail("Unsupported platform: ${::osfamily}/${::operatingsystem}")
-    # }
-  # }
-
-  $password           = undef
-  $gem                = true
-  $gem_names          = [ 'oxidized', 'oxidized-script', 'oxidized-web' ]
-  $config_file_template         = undef
-  $config_dir         = '/etc/oxidized'
-  # $config_file    = "${config_dir}/config"
-  $manage_user        = true
-  $manage_service     = true
-  $service_name       = 'oxidized'
-  $user               = 'oxidized'
-  $group              = 'oxidized'
-  $devices            = ['localhost']
+  $password             = undef
+  $gem                  = true
+  $gem_names            = [ 'oxidized', 'oxidized-script', 'oxidized-web' ]
+  $config_file_template = undef
+  $config_dir           = '/etc/oxidized'
+  $manage_user          = true
+  $manage_service       = true
+  $service_name         = 'oxidized'
+  $user                 = 'oxidized'
+  $group                = 'oxidized'
+  $devices              = ['localhost']
 
   $default_options = {
     username   => 'oxidized',

@@ -4,7 +4,7 @@
 #
 class oxidized::main (
 
-  $ensure   = present,
+  $ensure   = $oxidized::ensure,
   $password = $oxidized::password,
   $options  = {}
 

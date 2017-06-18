@@ -11,7 +11,7 @@
 #   e.g. "Specify one or more upstream ntp servers as an array."
 #
 class oxidized (
-
+  $ensure               = 'present',
   $main_options         = {},
   $password             = $oxidized::params::password,
   $gem                  = $oxidized::params::gem,
@@ -19,7 +19,6 @@ class oxidized (
   $manage_user          = $oxidized::params::manage_user,
   $service_provider     = $oxidized::params::service_provider,
   $service_name         = $oxidized::params::service_name,
-  $version              = 'present',
   $config_file_template = $oxidized::params::config_file_template,
   $config_dir           = $oxidized::params::config_dir,
   $user                 = $oxidized::params::user,
@@ -37,7 +36,7 @@ class oxidized (
   }
 
   class { '::oxidized::main':
-    ensure   => $version,
+    ensure   => $ensure,
     options  => $fin_main_options,
     password => $password,
   }

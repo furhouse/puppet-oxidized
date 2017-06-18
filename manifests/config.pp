@@ -42,13 +42,14 @@ class oxidized::config inherits oxidized {
   }
 
   concat { $config_file:
-    owner => $oxidized::user,
-    group => $oxidized::group,
-    mode  => '0440',
+    owner  => $oxidized::user,
+    group  => $oxidized::group,
+    mode   => '0440',
+    notify => Service[$oxidized::service_name],
   }
 
   Concat::Fragment {
-    target  => $config_file,
+    target => $config_file,
   }
 
   if empty($oxidized::config_file_template) {

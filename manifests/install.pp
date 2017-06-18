@@ -6,10 +6,10 @@ class oxidized::install inherits oxidized  {
 
   if $oxidized::gem {
     package { $oxidized::params::dependencies:
-      ensure  => $oxidized::main::ensure,
+      ensure  => $oxidized::ensure,
     }
     package { $oxidized::params::gem_names:
-      ensure   => $oxidized::main::ensure,
+      ensure   => $oxidized::ensure,
       provider => gem,
       require  => Package[$oxidized::params::dependencies],
     }
@@ -17,7 +17,7 @@ class oxidized::install inherits oxidized  {
 
   else {
     package { $oxidized::params::package_names:
-      ensure => $oxidized::main::ensure,
+      ensure => $oxidized::ensure,
     }
   }
 
