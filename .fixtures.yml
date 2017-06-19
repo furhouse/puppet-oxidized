@@ -11,7 +11,10 @@ fixtures:
       ref: "0.4.0"
     rvm:
       repo: "https://github.com/maestrodev/puppet-rvm"
-      ref: "1.13.1"
+      ref: "v1.13.1"
+    gnupg:
+      repo: "https://github.com/dgolja/golja-gnupg"
+      ref: "1.2.3"
   symlinks:
     oxidized: "#{source_dir}"
 
