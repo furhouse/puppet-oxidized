@@ -15,6 +15,8 @@ class oxidized (
   $main_options         = {},
   $password             = $oxidized::params::password,
   $gem                  = $oxidized::params::gem,
+  $gem_names            = $oxidized::params::gem_names,
+  $package_names        = $oxidized::params::package_names,
   $manage_service       = $oxidized::params::manage_service,
   $manage_user          = $oxidized::params::manage_user,
   $service_provider     = $oxidized::params::service_provider,
@@ -24,6 +26,7 @@ class oxidized (
   $user                 = $oxidized::params::user,
   $group                = $oxidized::params::group,
   $devices              = $oxidized::params::devices,
+  $rvm_ruby_version     = $oxidized::params::rvm_ruby_version,
 
 ) inherits oxidized::params {
 

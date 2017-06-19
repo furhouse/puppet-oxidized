@@ -21,7 +21,7 @@ class oxidized::config inherits oxidized {
     ensure  => file,
     owner   => $oxidized::user,
     group   => $oxidized::group,
-    mode    => '0640',
+    mode    => '0440',
     content => template("${module_name}/routerdb.erb"),
     require => File[$config_dir],
   }
@@ -69,8 +69,12 @@ class oxidized::config inherits oxidized {
   }
   else {
     concat::fragment { "${config_file}__header":
-      content => template($oxidized::config_file_template),
+      content => template("${module_name}/config/header.erb"),
       order   => '10',
+    }
+    concat::fragment { "${config_file}__custom":
+      content => template($oxidized::config_file_template),
+      order   => '20',
     }
   }
 

@@ -10,7 +10,6 @@ class oxidized::params {
       fail("Unsupported version ${::operatingsystemrelease}")
     } else {
       $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
-      $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
       $service_provider = 'systemd'
     }
   } elsif $::operatingsystem == 'Debian' {
@@ -18,19 +17,16 @@ class oxidized::params {
       fail("Unsupported version ${::operatingsystemrelease}")
     } else {
       $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
-      $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
       $service_provider = 'systemd'
     }
   } elsif $::operatingsystem =~ /CentOS|RedHat/ {
     if versioncmp($::operatingsystemrelease, '6.0') < 0 {
       fail("Unsupported version ${::operatingsystemrelease}")
     } elsif versioncmp($::operatingsystemrelease, '7.0') < 0 {
-      $dependencies  = [ 'cmake', 'sqlite-devel', 'openssl-devel', 'libssh2-devel', 'ruby', 'gcc', 'ruby-devel' ]
-      $package_names = [ 'ruby200-rubygem-oxidized', 'ruby200-rubygem-oxidized-web', 'ruby200-rubygem-oxidized-script' ]
-      $service_provider = 'init'
+      $dependencies  = [ 'cmake' ]
+      $service_provider = 'upstart'
     } else {
       $dependencies  = [ 'cmake', 'sqlite-devel', 'openssl-devel', 'libssh2-devel', 'ruby', 'gcc', 'ruby-devel' ]
-      $package_names = [ 'rubygem-oxidized', 'rubygem-oxidized-web', 'rubygem-oxidized-script' ]
       $service_provider = 'systemd'
     }
   } else {
@@ -40,6 +36,7 @@ class oxidized::params {
   $password             = undef
   $gem                  = true
   $gem_names            = [ 'oxidized', 'oxidized-script', 'oxidized-web' ]
+  $package_names        = []
   $config_file_template = undef
   $config_dir           = '/etc/oxidized'
   $manage_user          = true
@@ -48,6 +45,7 @@ class oxidized::params {
   $user                 = 'oxidized'
   $group                = 'oxidized'
   $devices              = ['localhost']
+  $rvm_ruby_version     = '2.1.2'
 
   $default_options = {
     username   => 'oxidized',

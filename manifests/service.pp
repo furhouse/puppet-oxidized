@@ -18,13 +18,13 @@ class oxidized::service inherits oxidized {
         }
         ~> Exec['systemctl-daemon-reload']
       }
-      'init': {
+      'upstart': {
         file { "/etc/init.d/${module_name}":
           ensure => file,
           owner  => 'root',
           group  => 'root',
-          mode   => '0644',
-          source => "puppet:///modules/${module_name}/${module_name}.init",
+          mode   => '0755',
+          source => "puppet:///modules/${module_name}/${module_name}.init.d",
         }
       }
       default: {
