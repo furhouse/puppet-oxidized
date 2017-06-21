@@ -33,6 +33,8 @@ class oxidized::params {
     fail("Your plattform ${::operatingsystem} is not supported, yet.")
   }
 
+  $ensure_package       = present
+  $main_options         = {}
   $username             = 'oxidized'
   $password             = 'oxidized'
   $gem                  = true
@@ -40,9 +42,12 @@ class oxidized::params {
   $package_names        = []
   $custom_config_file   = undef
   $config_dir           = '/etc/oxidized'
+  $pid_dir              = '/var/run/oxidized'
   $manage_user          = true
   $manage_service       = true
   $service_name         = 'oxidized'
+  $service_state        = running
+  $service_enable       = true
   $user                 = 'oxidized'
   $group                = 'oxidized'
   $devices              = ['localhost']
@@ -51,7 +56,6 @@ class oxidized::params {
   $rvm_build_opts       = ['--binary']
 
   $default_options = {
-    username   => 'oxidized',
     model      => 'junos',
     interval   => 3600,
     use_syslog => true,

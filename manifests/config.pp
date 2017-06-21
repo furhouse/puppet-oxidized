@@ -11,73 +11,91 @@ class oxidized::config inherits oxidized {
   $options      = $oxidized::main::merged_options
   $base_options = $oxidized::main_options
 
-  file { $config_dir:
-    ensure => directory,
-    owner  => $oxidized::user,
-    group  => $oxidized::group,
-    mode   => '0640',
-  }
+  if $oxidized::ensure =~ /(present|installed|latest)/ {
+    file { $config_dir:
+      ensure => directory,
+      owner  => $oxidized::user,
+      group  => $oxidized::group,
+      mode   => '0640',
+    }
 
-  file { $routerdb:
-    ensure  => file,
-    owner   => $oxidized::user,
-    group   => $oxidized::group,
-    mode    => '0440',
-    content => template("${module_name}/routerdb.erb"),
-    require => File[$config_dir],
-  }
+    file { $routerdb:
+      ensure  => file,
+      owner   => $oxidized::user,
+      group   => $oxidized::group,
+      mode    => '0440',
+      content => template("${module_name}/routerdb.erb"),
+      require => File[$config_dir],
+    }
+    if $oxidized::manage_user {
+      group { $oxidized::group:
+        ensure => present,
+        system => true,
+      }
+      user { $oxidized::user:
+        ensure     => present,
+        shell      => '/bin/false',
+        gid        => $oxidized::group,
+        home       => $config_dir,
+        managehome => false,
+        system     => true,
+      }
+    }
 
-  if $oxidized::manage_user {
-    group { $oxidized::group:
+    concat { $config_file:
       ensure => present,
-      system => true,
+      owner  => $oxidized::user,
+      group  => $oxidized::group,
+      mode   => '0440',
+      notify => Service[$oxidized::service_name],
+    }
+    Concat::Fragment {
+      target => $config_file,
+    }
+
+    if empty($oxidized::custom_config_file) {
+      concat::fragment { "${config_file}__header":
+        target  => $config_file,
+        content => template("${module_name}/config/header.erb"),
+        order   => '10',
+      }
+
+      if !empty($options) {
+        concat::fragment { "${config_file}__options":
+          target  => $config_file,
+          content => template("${module_name}/config/main_options.erb"),
+          order   => '20',
+        }
+      }
+    }
+    else {
+      concat::fragment { "${config_file}__header":
+        content => template("${module_name}/config/header.erb"),
+        order   => '10',
+      }
+      if empty($base_options) {
+        concat::fragment { "${config_file}__custom":
+          content => file("${module_name}/${oxidized::custom_config_file}"),
+          order   => '20',
+        }
+      }
+    }
+  }
+  elsif $oxidized::ensure == /absent/ {
+    file { $config_dir:
+      ensure => absent,
+    }
+    file { $routerdb:
+      ensure  => absent,
+    }
+    group { $oxidized::group:
+      ensure => absent,
     }
     user { $oxidized::user:
-      ensure     => present,
-      shell      => '/bin/false',
-      gid        => $oxidized::group,
-      home       => $config_dir,
-      managehome => false,
-      system     => true,
+      ensure     => absent,
     }
-  }
-
-  concat { $config_file:
-    owner  => $oxidized::user,
-    group  => $oxidized::group,
-    mode   => '0440',
-    notify => Service[$oxidized::service_name],
-  }
-
-  Concat::Fragment {
-    target => $config_file,
-  }
-
-  if empty($oxidized::custom_config_file) {
-    concat::fragment { "${config_file}__header":
-      target  => $config_file,
-      content => template("${module_name}/config/header.erb"),
-      order   => '10',
-    }
-
-    if !empty($options) {
-      concat::fragment { "${config_file}__options":
-        target  => $config_file,
-        content => template("${module_name}/config/main_options.erb"),
-        order   => '20',
-      }
-    }
-  }
-  else {
-    concat::fragment { "${config_file}__header":
-      content => template("${module_name}/config/header.erb"),
-      order   => '10',
-    }
-    if empty($base_options) {
-      concat::fragment { "${config_file}__custom":
-        content => file("${module_name}/${oxidized::custom_config_file}"),
-        order   => '20',
-      }
+    file { $config_file:
+      ensure => absent,
     }
   }
 

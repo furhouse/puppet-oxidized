@@ -5,47 +5,68 @@
 #
 class oxidized::service inherits oxidized {
 
-  if $oxidized::manage_service {
+  if $oxidized::ensure =~ /(present|installed|latest)/ {
+    if $oxidized::manage_service {
+      case $oxidized::service_provider {
+        'systemd': {
+          include ::systemd
+          file { "/etc/systemd/system/${module_name}.service":
+            ensure => file,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0644',
+            source => "puppet:///modules/${module_name}/${module_name}.service",
+          }
+          ~> Exec['systemctl-daemon-reload']
+        }
+        'upstart': {
+          file { "/etc/init.d/${module_name}":
+            ensure => file,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+            source => "puppet:///modules/${module_name}/${module_name}.init.d",
+          }
+        }
+        default: {
+          fail("Unsupported \$oxidized::service_provider, OS family: ${::osfamily}")
+        }
+      }
+      file { $oxidized::pid_dir:
+        ensure => directory,
+        owner  => $oxidized::user,
+        group  => $oxidized::group,
+        mode   => '0711',
+      }
+
+      service { $oxidized::service_name:
+        ensure     => $oxidized::service_state,
+        enable     => $oxidized::service_enable,
+        hasstatus  => true,
+        hasrestart => true,
+        require    => File[$oxidized::pid_dir],
+      }
+
+    }
+  }
+  elsif $oxidized::ensure == /absent/ {
+    file { $oxidized::pid_dir:
+      ensure => absent,
+    }
     case $oxidized::service_provider {
       'systemd': {
-        include ::systemd
         file { "/etc/systemd/system/${module_name}.service":
-          ensure => file,
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0644',
-          source => "puppet:///modules/${module_name}/${module_name}.service",
+          ensure => absent,
         }
-        ~> Exec['systemctl-daemon-reload']
       }
       'upstart': {
         file { "/etc/init.d/${module_name}":
-          ensure => file,
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0755',
-          source => "puppet:///modules/${module_name}/${module_name}.init.d",
+          ensure => absent,
         }
       }
       default: {
         fail("Unsupported \$oxidized::service_provider, OS family: ${::osfamily}")
       }
     }
-
-    file { '/var/run/oxidized':
-      ensure => 'directory',
-      owner  => $oxidized::user,
-      group  => $oxidized::group,
-      mode   => '0711',
-    }
-
-    service { $oxidized::service_name:
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
-      require    => File['/var/run/oxidized'],
-    }
   }
-
 }

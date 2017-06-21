@@ -25,7 +25,13 @@
 #
 # $service_name::         Specify the service name.
 #
+# $service_state          Specify the service state.
+#
+# $service_enable         Specify if the service is enabled.
+#
 # $config_dir::           Specify the Oxidized configuration directory.
+#
+# $pid_dir::              Specify the Oxidized pid directory.
 #
 # $user::                 Specify the name of the Oxidized system user.
 #
@@ -37,26 +43,33 @@
 #
 # $rvm_ruby_version::     Specify the ruby version to be installed with rvm, on RHEL/CentOS 6.
 #
+# $rvm_system_default::   Whether the ruby version installed with rvm should be system default.
+#
+# $rvm_build_opts::       Specify an array of build options for rvm.
+#
 class oxidized (
-  String $ensure                         = 'present',
-  Hash[String,Data] $main_options        = {},
-  String $username                       = $oxidized::params::username,
-  String $password                       = $oxidized::params::password,
-  Boolean $gem                           = $oxidized::params::gem,
-  Array[String] $gem_names               = $oxidized::params::gem_names,
-  Array[String] $package_names           = $oxidized::params::package_names,
-  Boolean $manage_service                = $oxidized::params::manage_service,
-  Boolean $manage_user                   = $oxidized::params::manage_user,
-  String $service_provider               = $oxidized::params::service_provider,
-  String $service_name                   = $oxidized::params::service_name,
-  Stdlib::Absolutepath $config_dir       = $oxidized::params::config_dir,
-  String $user                           = $oxidized::params::user,
-  String $group                          = $oxidized::params::group,
-  Array[String] $devices                 = $oxidized::params::devices,
-  Optional[String] $custom_config_file   = $oxidized::params::custom_config_file,
-  String $rvm_ruby_version               = $oxidized::params::rvm_ruby_version,
-  Boolean $rvm_system_default            = $oxidized::params::rvm_system_default,
-  Array[String] $rvm_build_opts          = $oxidized::params::rvm_build_opts,
+  Enum['latest', 'present', 'installed', 'absent'] $ensure = $oxidized::params::ensure_package,
+  Hash[String,Data] $main_options                          = $oxidized::params::main_options,
+  String $username                                         = $oxidized::params::username,
+  String $password                                         = $oxidized::params::password,
+  Boolean $gem                                             = $oxidized::params::gem,
+  Array[String] $gem_names                                 = $oxidized::params::gem_names,
+  Array[String] $package_names                             = $oxidized::params::package_names,
+  Boolean $manage_service                                  = $oxidized::params::manage_service,
+  Boolean $manage_user                                     = $oxidized::params::manage_user,
+  String $service_provider                                 = $oxidized::params::service_provider,
+  String $service_name                                     = $oxidized::params::service_name,
+  String $service_state                                    = $oxidized::params::service_state,
+  Boolean $service_enable                                  = $oxidized::params::service_enable,
+  Stdlib::Absolutepath $config_dir                         = $oxidized::params::config_dir,
+  Stdlib::Absolutepath $pid_dir                            = $oxidized::params::pid_dir,
+  String $user                                             = $oxidized::params::user,
+  String $group                                            = $oxidized::params::group,
+  Array[String] $devices                                   = $oxidized::params::devices,
+  Optional[String] $custom_config_file                     = $oxidized::params::custom_config_file,
+  String $rvm_ruby_version                                 = $oxidized::params::rvm_ruby_version,
+  Boolean $rvm_system_default                              = $oxidized::params::rvm_system_default,
+  Array[String] $rvm_build_opts                            = $oxidized::params::rvm_build_opts,
 
 ) inherits oxidized::params {
 
