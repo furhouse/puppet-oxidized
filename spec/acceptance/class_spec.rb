@@ -5,7 +5,7 @@ describe 'oxidized class' do
     # Using puppet_apply as a helper
     it 'should work idempotently with no errors' do
       pp = <<-EOS
-      class { 'oxidized': password => 'oxidized' }
+      class { 'oxidized': }
       EOS
 
       # Run it twice and test for idempotency

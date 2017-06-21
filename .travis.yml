@@ -9,13 +9,12 @@ rvm:
   - 2.1.8
 env:
   matrix:
-    - PUPPET_GEM_VERSION="~> 3.7.0" STRICT_VARIABLES=yes
-    - PUPPET_GEM_VERSION="~> 3.8.0" STRICT_VARIABLES=yes FUTURE_PARSER=yes
-    - PUPPET_GEM_VERSION="~> 4.10.0" STRICT_VARIABLES=yes
+    - PUPPET_GEM_VERSION="~> 4.6" STRICT_VARIABLES=yes
+    - PUPPET_GEM_VERSION="~> 4.10" STRICT_VARIABLES=yes
 matrix:
   fast_finish: true
 branches:
   only:
-  - master
+  - spec
 notifications:
-  email: true
+  email: false

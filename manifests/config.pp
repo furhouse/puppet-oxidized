@@ -27,19 +27,17 @@ class oxidized::config inherits oxidized {
       content => template("${module_name}/routerdb.erb"),
       require => File[$config_dir],
     }
-    if $oxidized::manage_user {
-      group { $oxidized::group:
-        ensure => present,
-        system => true,
-      }
-      user { $oxidized::user:
-        ensure     => present,
-        shell      => '/bin/false',
-        gid        => $oxidized::group,
-        home       => $config_dir,
-        managehome => false,
-        system     => true,
-      }
+    group { $oxidized::group:
+      ensure => present,
+      system => true,
+    }
+    user { $oxidized::user:
+      ensure     => present,
+      shell      => '/bin/false',
+      gid        => $oxidized::group,
+      home       => $config_dir,
+      managehome => false,
+      system     => true,
     }
 
     concat { $config_file:

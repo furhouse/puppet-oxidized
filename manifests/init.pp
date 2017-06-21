@@ -1,53 +1,56 @@
 # Class: oxidized
 # ===========================
 #
-# === Parameters:
+# @summary Manages Oxidized
 #
-# $ensure::               Whether Oxidized and its dependencies should be present.
+# @example Declaring the class
+#   include '::oxidized'
 #
-# $main_options::         A hash with all the main settings, minus the username and password.
+# @param ensure Enum['latest', 'present', 'installed', 'absent'] Whether Oxidized and its dependencies should be present.
 #
-# $username::             Main Oxidized username.
+# @param main_options Hash[String,Data] A hash with all the main settings, minus the username and password.
 #
-# $password::             Main Oxidized password.
+# @param username String Main Oxidized username.
 #
-# $gem::                  Wheter to install Oxidized as ruby gem.
+# @param password String Main Oxidized password.
 #
-# $gem_names::            Oxidized, oxidized-web and oxidized-script gem names.
+# @param gem Boolean Wheter to install Oxidized as ruby gem.
 #
-# $package_names::        Oxidized, oxidized-Web and oxidized-script package names.
+# @param gem_names Array[String] Oxidized, oxidized-web and oxidized-script gem names.
 #
-# $manage_service::       Manage the Oxidized service.
+# @param package_names Array[String] Oxidized, oxidized-Web and oxidized-script package names.
 #
-# $manage_user::          Manage the Oxidized user and group.
+# @param manage_service Boolean Manage the Oxidized service.
 #
-# $service_provider::     Specify the service provider.
+# @param manage_user Boolean Manage the Oxidized user and group.
 #
-# $service_name::         Specify the service name.
+# @param service_provider String Specify the service provider.
 #
-# $service_state          Specify the service state.
+# @param service_name String Specify the service name.
 #
-# $service_enable         Specify if the service is enabled.
+# @param service_state String Specify the service state.
 #
-# $config_dir::           Specify the Oxidized configuration directory.
+# @param service_enable Boolean Specify if the service is enabled.
 #
-# $pid_dir::              Specify the Oxidized pid directory.
+# @param config_dir [Stdlib::Absolutepath] Specify the Oxidized configuration directory.
 #
-# $user::                 Specify the name of the Oxidized system user.
+# @param pid_dir [Stdlib::Absolutepath] Specify the Oxidized pid directory.
 #
-# $group::                Specify the name of the Oxidized system group.
+# @param user String Specify the name of the Oxidized system user.
 #
-# $devices::              Specify an array of devices to be backed up by Oxidized.
+# @param group String Specify the name of the Oxidized system group.
 #
-# $custom_config_file     Provide your own config, from a file.
+# @param devices Optional[Array] Specify an array of devices to be backed up by Oxidized.
 #
-# $manage_with_rvm::      Specify whether the gems should be installed with rvm, on RHEL/CentOS 6.
+# @param custom_config_file Optional[String] Provide your own config, from a file.
 #
-# $rvm_ruby_version::     Specify the ruby version to be installed with rvm, on RHEL/CentOS 6.
+# @param manage_with_rvm Boolean Specify whether the gems should be installed with rvm, on RHEL/CentOS 6.
 #
-# $rvm_system_default::   Whether the ruby version installed with rvm should be system default, on RHEL/CentOS 6.
+# @param rvm_ruby_version String Specify the ruby version to be installed with rvm, on RHEL/CentOS 6.
 #
-# $rvm_build_opts::       Specify an array of build options for rvm, on RHEL/CentOS 6.
+# @param rvm_system_default Boolean Whether the ruby version installed with rvm should be system default, on RHEL/CentOS 6.
+#
+# @param rvm_build_opts Array[String] Specify an array of build options for rvm, on RHEL/CentOS 6.
 #
 class oxidized (
   Enum['latest', 'present', 'installed', 'absent'] $ensure = $oxidized::params::ensure_package,
@@ -73,7 +76,6 @@ class oxidized (
   String $rvm_ruby_version                                 = $oxidized::params::rvm_ruby_version,
   Boolean $rvm_system_default                              = $oxidized::params::rvm_system_default,
   Array[String] $rvm_build_opts                            = $oxidized::params::rvm_build_opts,
-
 ) inherits oxidized::params {
 
   # Merge hashes from multiple layer of hierarchy in hiera
@@ -84,10 +86,6 @@ class oxidized (
     default => $hiera_main_options,
   }
 
-  class { '::oxidized::main':
-    ensure   => $ensure,
-    options  => $fin_main_options,
-    password => $password,
-  }
+  class { '::oxidized::main': }
 
 }

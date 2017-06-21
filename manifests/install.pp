@@ -54,7 +54,6 @@ class oxidized::install inherits oxidized  {
       package { $oxidized::params::gem_names:
         ensure   => $oxidized::ensure,
         provider => gem,
-        require  => Package[$oxidized::params::dependencies],
       }
 
     }

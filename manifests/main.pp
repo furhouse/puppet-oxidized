@@ -2,32 +2,21 @@
 #
 # This class is called from oxidized for oxidized main config.
 #
-class oxidized::main (
-
-  $ensure   = $oxidized::ensure,
-  $password = $oxidized::password,
-  $username = $oxidized::username,
-  $options  = {}
-
-  ) inherits oxidized::params {
+class oxidized::main  inherits oxidized {
 
   $fin_user = {
-    username => $username,
+    username => $oxidized::username,
   }
 
-  # if $password == undef {
-    # fail("Please provide a \$oxidized::password.")
-  # }
-
   $fin_pass = {
-    password => $password,
+    password => $oxidized::password,
   }
 
   # Merge hashes from multiple layer of hierarchy in hiera
-  $hiera_options = hiera_hash("${module_name}::main::options", undef)
+  $hiera_options = hiera_hash("${module_name}::main_options", undef)
 
   $fin_options = $hiera_options ? {
-    undef   => $options,
+    undef   => $oxidized::main_options,
     default => $hiera_options,
   }
 

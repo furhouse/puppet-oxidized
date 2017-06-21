@@ -10,7 +10,7 @@ class oxidized::service inherits oxidized {
       case $oxidized::service_provider {
         'systemd': {
           include ::systemd
-          file { "/etc/systemd/system/${module_name}.service":
+          file { "/etc/systemd/system/${$oxidized::service_name}.service":
             ensure => file,
             owner  => 'root',
             group  => 'root',
@@ -20,7 +20,7 @@ class oxidized::service inherits oxidized {
           ~> Exec['systemctl-daemon-reload']
         }
         'upstart': {
-          file { "/etc/init.d/${module_name}":
+          file { "/etc/init.d/${$oxidized::service_name}":
             ensure => file,
             owner  => 'root',
             group  => 'root',
@@ -53,20 +53,11 @@ class oxidized::service inherits oxidized {
     file { $oxidized::pid_dir:
       ensure => absent,
     }
-    case $oxidized::service_provider {
-      'systemd': {
-        file { "/etc/systemd/system/${module_name}.service":
-          ensure => absent,
-        }
-      }
-      'upstart': {
-        file { "/etc/init.d/${module_name}":
-          ensure => absent,
-        }
-      }
-      default: {
-        fail("Unsupported \$oxidized::service_provider, OS family: ${::osfamily}")
-      }
+    file { "/etc/systemd/system/${$oxidized::service_name}.service":
+      ensure => absent,
+    }
+    file { "/etc/init.d/${$oxidized::service_name}":
+      ensure => absent,
     }
   }
 }
