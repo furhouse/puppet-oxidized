@@ -33,11 +33,12 @@ class oxidized::params {
     fail("Your plattform ${::operatingsystem} is not supported, yet.")
   }
 
-  $password             = undef
+  $username             = 'oxidized'
+  $password             = 'oxidized'
   $gem                  = true
   $gem_names            = [ 'oxidized', 'oxidized-script', 'oxidized-web' ]
   $package_names        = []
-  $config_file_template = undef
+  $custom_config_file   = undef
   $config_dir           = '/etc/oxidized'
   $manage_user          = true
   $manage_service       = true

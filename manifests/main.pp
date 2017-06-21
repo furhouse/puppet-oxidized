@@ -6,9 +6,14 @@ class oxidized::main (
 
   $ensure   = $oxidized::ensure,
   $password = $oxidized::password,
+  $username = $oxidized::username,
   $options  = {}
 
   ) inherits oxidized::params {
+
+  $fin_user = {
+    username => $username,
+  }
 
   # if $password == undef {
     # fail("Please provide a \$oxidized::password.")
@@ -26,7 +31,7 @@ class oxidized::main (
     default => $hiera_options,
   }
 
-  $merged_options = merge($fin_pass, $oxidized::params::default_options, $fin_options)
+  $merged_options = merge($fin_pass, $fin_user, $oxidized::params::default_options, $fin_options)
 
   include '::oxidized::install'
   include '::oxidized::config'

@@ -5,7 +5,9 @@
 #
 # $ensure::               Whether Oxidized and its dependencies should be present.
 #
-# $main_options::         A hash with all the main settings, minus password.
+# $main_options::         A hash with all the main settings, minus the username and password.
+#
+# $username::             Main Oxidized username.
 #
 # $password::             Main Oxidized password.
 #
@@ -31,13 +33,14 @@
 #
 # $devices::              Specify an array of devices to be backed up by Oxidized.
 #
-# $config_file_template:: Provide your own config, from a file.
+# $custom_config_file     Provide your own config, from a file.
 #
 # $rvm_ruby_version::     Specify the ruby version to be installed with rvm, on RHEL/CentOS 6.
 #
 class oxidized (
   String $ensure                         = 'present',
   Hash[String,Data] $main_options        = {},
+  String $username                       = $oxidized::params::username,
   String $password                       = $oxidized::params::password,
   Boolean $gem                           = $oxidized::params::gem,
   Array[String] $gem_names               = $oxidized::params::gem_names,
@@ -50,7 +53,7 @@ class oxidized (
   String $user                           = $oxidized::params::user,
   String $group                          = $oxidized::params::group,
   Array[String] $devices                 = $oxidized::params::devices,
-  Optional[String] $config_file_template = $oxidized::params::config_file_template,
+  Optional[String] $custom_config_file   = $oxidized::params::custom_config_file,
   String $rvm_ruby_version               = $oxidized::params::rvm_ruby_version,
   Boolean $rvm_system_default            = $oxidized::params::rvm_system_default,
   Array[String] $rvm_build_opts          = $oxidized::params::rvm_build_opts,

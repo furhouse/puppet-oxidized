@@ -4,11 +4,12 @@
 #
 class oxidized::config inherits oxidized {
 
-  $config_dir  = $oxidized::config_dir
-  $config_file = "${config_dir}/config"
-  $routerdb    = "${config_dir}/router.db"
-  $devices     = $oxidized::devices
-  $options     = $oxidized::main::merged_options
+  $config_dir   = $oxidized::config_dir
+  $config_file  = "${config_dir}/config"
+  $routerdb     = "${config_dir}/router.db"
+  $devices      = $oxidized::devices
+  $options      = $oxidized::main::merged_options
+  $base_options = $oxidized::main_options
 
   file { $config_dir:
     ensure => directory,
@@ -52,7 +53,7 @@ class oxidized::config inherits oxidized {
     target => $config_file,
   }
 
-  if empty($oxidized::config_file_template) {
+  if empty($oxidized::custom_config_file) {
     concat::fragment { "${config_file}__header":
       target  => $config_file,
       content => template("${module_name}/config/header.erb"),
@@ -72,9 +73,11 @@ class oxidized::config inherits oxidized {
       content => template("${module_name}/config/header.erb"),
       order   => '10',
     }
-    concat::fragment { "${config_file}__custom":
-      content => template($oxidized::config_file_template),
-      order   => '20',
+    if empty($base_options) {
+      concat::fragment { "${config_file}__custom":
+        content => file("${module_name}/${oxidized::custom_config_file}"),
+        order   => '20',
+      }
     }
   }
 
