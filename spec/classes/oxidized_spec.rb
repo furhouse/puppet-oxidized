@@ -21,7 +21,7 @@ describe 'oxidized', :type => :class do
         end
 
         context 'default' do
-          let(:params) { { :password => 'oxidized', :gem => true } }
+          let(:params) { { :gem => true } }
 
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_class('oxidized::params') }
@@ -104,21 +104,21 @@ describe 'oxidized', :type => :class do
             it { should contain_file(pid_dir).with_mode('0711') }
 
             if facts[:os]['family'] == 'Debian'
-              let(:params) { { :password => 'oxidized', :service_provider => 'systemd' } }
+              let(:params) { { :service_provider => 'systemd' } }
 
               it { should contain_file(systemd_file).with_ensure('file') }
               it { should contain_file(systemd_file).with_owner('root') }
               it { should contain_file(systemd_file).with_group('root') }
               it { should contain_file(systemd_file).with_mode('0644') }
             elsif facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '7'
-              let(:params) { { :password => 'oxidized', :service_provider => 'systemd' } }
+              let(:params) { { :service_provider => 'systemd' } }
 
               it { should contain_file(systemd_file).with_ensure('file') }
               it { should contain_file(systemd_file).with_owner('root') }
               it { should contain_file(systemd_file).with_group('root') }
               it { should contain_file(systemd_file).with_mode('0644') }
             elsif facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '6'
-              let(:params) { { :password => 'oxidized', :service_provider => 'upstart' } }
+              let(:params) { { :service_provider => 'upstart' } }
 
               it { should contain_file(centos6_upstart).with_ensure('file') }
 
