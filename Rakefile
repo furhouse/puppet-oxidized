@@ -3,11 +3,18 @@ require 'bundler/setup'
 
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet/version'
-require 'puppet/vendor/semantic/lib/semantic' unless Puppet.version.to_f < 3.6
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'metadata-json-lint/rake_task'
 require 'rubocop/rake_task'
+
+require 'puppet-strings/tasks'
+
+if Puppet.version.to_f >= 4.9
+    require 'semantic_puppet'
+elsif Puppet.version.to_f >= 3.6 && Puppet.version.to_f < 4.9
+    require 'puppet/vendor/semantic/lib/semantic'
+end
 
 # These gems aren't always present, for instance
 # on Travis with --without development
@@ -27,7 +34,7 @@ exclude_paths = [
 
 # Coverage from puppetlabs-spec-helper requires rcov which
 # doesn't work in anything since 1.8.7
-Rake::Task[:coverage].clear
+Rake::Task[:coverage].clear if Rake::Task.task_defined?(:coverage)
 
 Rake::Task[:lint].clear
 

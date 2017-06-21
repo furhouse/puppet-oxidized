@@ -17,6 +17,9 @@ RSpec.configure do |c|
     puppet_module_install(:source => proj_root, :module_name => 'oxidized')
     hosts.each do |host|
       on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', 'puppetlabs-concat'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', 'camptocamp-systemd'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', 'maestrodev-rvm'), { :acceptable_exit_codes => [0,1] }
     end
   end
 end

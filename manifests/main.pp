@@ -2,41 +2,37 @@
 #
 # This class is called from oxidized for oxidized main config.
 #
-class oxidized::main (
+class oxidized::main  inherits oxidized {
 
-  $ensure   = present,
-  $password = $oxidized::params::password,
-  $options  = {}
-
-  ) inherits oxidized::params {
-
-  if $password == undef {
-    fail('Please set a password.')
+  $fin_user = {
+    username => $oxidized::username,
   }
 
   $fin_pass = {
-    password => $password,
+    password => $oxidized::password,
   }
 
   # Merge hashes from multiple layer of hierarchy in hiera
-  $hiera_options = hiera_hash("${module_name}::main::options", undef)
+  $hiera_options = hiera_hash("${module_name}::main_options", undef)
 
   $fin_options = $hiera_options ? {
-    undef   => $options,
+    undef   => $oxidized::main_options,
     default => $hiera_options,
   }
 
-  $merged_options = merge($fin_pass, $oxidized::params::default_options, $fin_options)
+  $merged_options = merge($fin_pass, $fin_user, $oxidized::params::default_options, $fin_options)
 
-  include oxidized::install
-  include oxidized::config
+  include '::oxidized::install'
+  include '::oxidized::config'
+  include '::oxidized::service'
 
   anchor { 'oxidized::main::start': }
   anchor { 'oxidized::main::end': }
 
-  Anchor['oxidized::main::start'] ->
-  Class['oxidized::install'] ->
-  Class['oxidized::config'] ~>
-  Anchor['oxidized::main::end']
+  Anchor['oxidized::main::start']
+  -> Class['oxidized::install']
+  -> Class['oxidized::config']
+  -> Class['oxidized::service']
+  ~> Anchor['oxidized::main::end']
 
 }

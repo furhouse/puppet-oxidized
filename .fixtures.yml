@@ -1,5 +1,20 @@
 fixtures:
   repositories:
-    stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+    concat:
+      repo: "https://github.com/puppetlabs/puppetlabs-concat.git"
+      ref: "2.2.1"
+    stdlib:
+      repo: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+      ref: "4.17.0"
+    systemd:
+      repo: "https://github.com/camptocamp/puppet-systemd"
+      ref: "0.4.0"
+    rvm:
+      repo: "https://github.com/maestrodev/puppet-rvm"
+      ref: "v1.13.1"
+    gnupg:
+      repo: "https://github.com/dgolja/golja-gnupg"
+      ref: "1.2.3"
   symlinks:
     oxidized: "#{source_dir}"
+
