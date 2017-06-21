@@ -5,7 +5,7 @@
 class oxidized::install inherits oxidized  {
 
   if $oxidized::gem {
-    if $::facts['os']['family'] == 'RedHat' and $::facts['os']['release']['major'] == '6' {
+    if $oxidized::manage_with_rvm and $::facts['os']['family'] == 'RedHat' and $::facts['os']['release']['major'] == '6' {
 
       package { $oxidized::params::dependencies:
         ensure  => $oxidized::ensure,

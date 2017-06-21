@@ -41,11 +41,13 @@
 #
 # $custom_config_file     Provide your own config, from a file.
 #
+# $manage_with_rvm::      Specify whether the gems should be installed with rvm, on RHEL/CentOS 6.
+#
 # $rvm_ruby_version::     Specify the ruby version to be installed with rvm, on RHEL/CentOS 6.
 #
-# $rvm_system_default::   Whether the ruby version installed with rvm should be system default.
+# $rvm_system_default::   Whether the ruby version installed with rvm should be system default, on RHEL/CentOS 6.
 #
-# $rvm_build_opts::       Specify an array of build options for rvm.
+# $rvm_build_opts::       Specify an array of build options for rvm, on RHEL/CentOS 6.
 #
 class oxidized (
   Enum['latest', 'present', 'installed', 'absent'] $ensure = $oxidized::params::ensure_package,
@@ -67,6 +69,7 @@ class oxidized (
   String $group                                            = $oxidized::params::group,
   Array[String] $devices                                   = $oxidized::params::devices,
   Optional[String] $custom_config_file                     = $oxidized::params::custom_config_file,
+  Boolean $manage_with_rvm                                 = $oxidized::params::manage_with_rvm,
   String $rvm_ruby_version                                 = $oxidized::params::rvm_ruby_version,
   Boolean $rvm_system_default                              = $oxidized::params::rvm_system_default,
   Array[String] $rvm_build_opts                            = $oxidized::params::rvm_build_opts,
