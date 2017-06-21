@@ -46,6 +46,8 @@ class oxidized::params {
   $group                = 'oxidized'
   $devices              = ['localhost']
   $rvm_ruby_version     = '2.1.2'
+  $rvm_system_default   = true
+  $rvm_build_opts       = ['--binary']
 
   $default_options = {
     username   => 'oxidized',

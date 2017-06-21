@@ -1,14 +1,39 @@
 # Class: oxidized
 # ===========================
 #
-# Full description of class oxidized here.
+# === Parameters:
 #
-# Parameters
-# ----------
+# $ensure::               Whether Oxidized and its dependencies should be present.
 #
-# * `sample parameter`
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
+# $main_options::         A hash with all the main settings, minus password.
+#
+# $password::             Main Oxidized password.
+#
+# $gem::                  Wheter to install Oxidized as ruby gem.
+#
+# $gem_names::            Oxidized, oxidized-web and oxidized-script gem names.
+#
+# $package_names::        Oxidized, oxidized-Web and oxidized-script package names.
+#
+# $manage_service::       Manage the Oxidized service.
+#
+# $manage_user::          Manage the Oxidized user and group.
+#
+# $service_provider::     Specify the service provider.
+#
+# $service_name::         Specify the service name.
+#
+# $config_dir::           Specify the Oxidized configuration directory.
+#
+# $user::                 Specify the name of the Oxidized system user.
+#
+# $group::                Specify the name of the Oxidized system group.
+#
+# $devices::              Specify an array of devices to be backed up by Oxidized.
+#
+# $config_file_template:: Provide your own config, from a file.
+#
+# $rvm_ruby_version::     Specify the ruby version to be installed with rvm, on RHEL/CentOS 6.
 #
 class oxidized (
   String $ensure                         = 'present',
@@ -21,12 +46,14 @@ class oxidized (
   Boolean $manage_user                   = $oxidized::params::manage_user,
   String $service_provider               = $oxidized::params::service_provider,
   String $service_name                   = $oxidized::params::service_name,
-  Optional[String] $config_file_template = $oxidized::params::config_file_template,
   Stdlib::Absolutepath $config_dir       = $oxidized::params::config_dir,
   String $user                           = $oxidized::params::user,
   String $group                          = $oxidized::params::group,
   Array[String] $devices                 = $oxidized::params::devices,
+  Optional[String] $config_file_template = $oxidized::params::config_file_template,
   String $rvm_ruby_version               = $oxidized::params::rvm_ruby_version,
+  Boolean $rvm_system_default            = $oxidized::params::rvm_system_default,
+  Array[String] $rvm_build_opts          = $oxidized::params::rvm_build_opts,
 
 ) inherits oxidized::params {
 

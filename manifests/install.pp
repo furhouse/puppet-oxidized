@@ -15,8 +15,8 @@ class oxidized::install inherits oxidized  {
         system_rubies => {
           "ruby-${oxidized::rvm_ruby_version}" => {
             ensure      => $oxidized::ensure,
-            default_use => true,
-            build_opts  => ['--binary'],
+            default_use => $oxidized::rvm_system_default,
+            build_opts  => $oxidized::rvm_build_opts,
           },
         },
         require       => Package[$oxidized::params::dependencies],
