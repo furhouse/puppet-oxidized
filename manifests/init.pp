@@ -11,22 +11,22 @@
 #   e.g. "Specify one or more upstream ntp servers as an array."
 #
 class oxidized (
-  $ensure               = 'present',
-  $main_options         = {},
-  $password             = $oxidized::params::password,
-  $gem                  = $oxidized::params::gem,
-  $gem_names            = $oxidized::params::gem_names,
-  $package_names        = $oxidized::params::package_names,
-  $manage_service       = $oxidized::params::manage_service,
-  $manage_user          = $oxidized::params::manage_user,
-  $service_provider     = $oxidized::params::service_provider,
-  $service_name         = $oxidized::params::service_name,
-  $config_file_template = $oxidized::params::config_file_template,
-  $config_dir           = $oxidized::params::config_dir,
-  $user                 = $oxidized::params::user,
-  $group                = $oxidized::params::group,
-  $devices              = $oxidized::params::devices,
-  $rvm_ruby_version     = $oxidized::params::rvm_ruby_version,
+  String $ensure                         = 'present',
+  Hash[String,Data] $main_options        = {},
+  String $password                       = $oxidized::params::password,
+  Boolean $gem                           = $oxidized::params::gem,
+  Array[String] $gem_names               = $oxidized::params::gem_names,
+  Array[String] $package_names           = $oxidized::params::package_names,
+  Boolean $manage_service                = $oxidized::params::manage_service,
+  Boolean $manage_user                   = $oxidized::params::manage_user,
+  String $service_provider               = $oxidized::params::service_provider,
+  String $service_name                   = $oxidized::params::service_name,
+  Optional[String] $config_file_template = $oxidized::params::config_file_template,
+  Stdlib::Absolutepath $config_dir       = $oxidized::params::config_dir,
+  String $user                           = $oxidized::params::user,
+  String $group                          = $oxidized::params::group,
+  Array[String] $devices                 = $oxidized::params::devices,
+  String $rvm_ruby_version               = $oxidized::params::rvm_ruby_version,
 
 ) inherits oxidized::params {
 
