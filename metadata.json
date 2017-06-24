@@ -1,6 +1,6 @@
 {
   "name": "furhouse-oxidized",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Wim Bonthuis <wim@500k.nl>",
   "summary": "Configures Oxidized, a network device configuration backup tool.",
   "license": "Apache-2.0",
