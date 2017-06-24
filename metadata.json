@@ -2,11 +2,14 @@
   "name": "furhouse-oxidized",
   "version": "0.1.1",
   "author": "Wim Bonthuis <wim@500k.nl>",
-  "summary": "Configures Oxidized",
+  "summary": "Configures Oxidized, a network device configuration backup tool.",
   "license": "Apache-2.0",
   "source": "https://github.com/furhouse/puppet-oxidized",
   "project_page": "https://github.com/furhouse/puppet-oxidized",
   "issues_url": "https://github.com/furhouse/puppet-oxidized/issues",
+  "tags": [
+    "oxidized"
+  ],
   "dependencies": [
     {
       "name": "camptocamp/systemd",

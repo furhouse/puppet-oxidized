@@ -22,7 +22,7 @@ Downloads, installs and configures [Oxidized](https://github.com/ytti/oxidized).
 
 ## Module Description
 
-This module installs Oxidized.
+This module installs Oxidized, a network device configuration backup tool.
 
 ## Setup
 
@@ -36,7 +36,7 @@ This module installs Oxidized.
 
 ### Setup Requirements
 
-This module expects ruby version >= 2.1.2 to be installed on the target system.
+Oxidized expects ruby version >= 2.1.2 to be installed on the target system.
 
 By default, rvm is used to install ruby 2.1.2 on RHEL/CentOS 6.
 
@@ -422,7 +422,6 @@ hooks: {}
 - Hardcoded gem names if RHEL/CentOS 6 is used.
 - Hardcoded upstart and systemd service files.
 - Does not manage SELinux.
-- This module is tested with ruby 2.1.8
 
 ## Development
 
@@ -439,5 +438,3 @@ This project uses rspec-puppet and beaker to ensure the module works as expected
 - Create branch for Puppet 3.
 - Template service files.
 - Revisit [$osidized::ensure => absent](#ensure), especially removal of packages with `provider => gem`.
-- Expand travis ruby versions.
-- Publish to Forge.
