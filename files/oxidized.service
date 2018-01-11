@@ -5,7 +5,7 @@ Description=Oxidized - Network Device Configuration Backup Tool
 After=network-online.target
 
 [Service]
-ExecStart=/usr/local/bin/oxidized
+ExecStart=/usr/local/rvm/bin/oxidized
 KillSignal=SIGKILL
 User=oxidized
 

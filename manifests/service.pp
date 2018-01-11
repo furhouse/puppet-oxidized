@@ -9,15 +9,14 @@ class oxidized::service inherits oxidized {
     if $oxidized::manage_service {
       case $oxidized::service_provider {
         'systemd': {
-          include ::systemd
+          include ::systemd::systemctl::daemon_reload
           file { "/etc/systemd/system/${$oxidized::service_name}.service":
             ensure => file,
             owner  => 'root',
             group  => 'root',
             mode   => '0644',
             source => "puppet:///modules/${module_name}/${module_name}.service",
-          }
-          ~> Exec['systemctl-daemon-reload']
+          } ~> Class['systemd::systemctl::daemon_reload']
         }
         'upstart': {
           file { "/etc/init.d/${$oxidized::service_name}":
@@ -45,6 +44,7 @@ class oxidized::service inherits oxidized {
         hasstatus  => true,
         hasrestart => true,
         require    => File[$oxidized::pid_dir],
+        subscribe => File["/etc/systemd/system/${$oxidized::service_name}.service"],
       }
 
     }
