@@ -43,6 +43,7 @@ class oxidized::params {
   $custom_config_file   = undef
   $config_dir           = '/etc/oxidized'
   $pid_dir              = '/var/run/oxidized'
+  $data_dir             = '/var/lib/oxidized'
   $manage_user          = true
   $manage_service       = true
   $service_name         = 'oxidized'
@@ -82,7 +83,7 @@ class oxidized::params {
         git      => {
           user   => 'Oxidized',
           email  => 'oxidized@example.com',
-          repo   => '~/.config/oxidized/oxidized.git',
+          repo   => '/var/lib/oxidized/oxidized.git',
         },
     },
     source      => {
