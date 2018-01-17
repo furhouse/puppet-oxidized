@@ -40,6 +40,13 @@ class oxidized::config inherits oxidized {
       system     => true,
     }
 
+    file { $data_dir: 
+      ensure => directory,
+      owner  => $oxidized::user,
+      group  => $oxidized::group,
+      mode   => '0640',
+    }
+
     concat { $config_file:
       ensure => present,
       owner  => $oxidized::user,
