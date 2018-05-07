@@ -60,6 +60,7 @@ class oxidized (
   Boolean $gem                                             = $oxidized::params::gem,
   Array[String] $gem_names                                 = $oxidized::params::gem_names,
   Array[String] $package_names                             = $oxidized::params::package_names,
+  Array[String] $dependencies                              = $oxidized::params::dependencies,
   Boolean $manage_service                                  = $oxidized::params::manage_service,
   Boolean $manage_user                                     = $oxidized::params::manage_user,
   String $service_provider                                 = $oxidized::params::service_provider,
