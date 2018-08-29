@@ -10,6 +10,7 @@ class oxidized::params {
       fail("Unsupported version ${::operatingsystemrelease}")
     } elsif versioncmp($::operatingsystemrelease, '18.04') == 0 {
       $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl1.0-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
+      $service_provider = 'systemd'
     } else {
       $dependencies  = [ 'ruby', 'ruby-dev', 'libsqlite3-dev', 'libssl-dev', 'pkg-config', 'cmake', 'libssh2-1-dev' ]
       $service_provider = 'systemd'
